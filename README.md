@@ -78,11 +78,10 @@ rice-cultivar-vision-classifier/
 ├── .gitignore
 ├── docs/
 │   └── demo_sample.png            # Visual classification sample
-├── src/
-│   ├── inference_pipeline.py      # Grain segmentation, perspective alignment & visual overlay
-│   └── train_cnn.py               # Deep CNN architecture, training loops & evaluation
-└── models/
-    └── .gitkeep                   # Target directory for exported .keras model weights
+└── src/
+    ├── inference_pipeline.py      # Grain segmentation, perspective alignment & visual overlay
+    └── train_cnn.py               # Deep CNN architecture, training loops & evaluation
+
 
 ```
 
