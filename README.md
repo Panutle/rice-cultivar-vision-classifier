@@ -5,7 +5,7 @@ An automated Computer Vision and Deep Learning framework engineered for non-dest
 ## 📌 Demonstration & Visual Output
 
 <div align="center">
-  <img src="docs/demo_sample.png" alt="Rice Grain Cultivar Classification Output" width="850px" />
+  <img src="docs/demo_sample.jpg" alt="Rice Grain Cultivar Classification Output" width="850px" />
   <p><em>Figure: Automated segmentation, perspective rectification, and color-coded multi-class contour overlay distinguishing rice cultivars on an inspection surface.</em></p>
 </div>
 
