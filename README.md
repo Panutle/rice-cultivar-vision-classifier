@@ -2,7 +2,12 @@
 
 An automated Computer Vision and Deep Learning framework engineered for non-destructive agricultural grain quality inspection and phenotypic analysis. The system detects, segments, and normalizes individual rice grains distributed across an inspection surface and classifies distinct cultivars (`BN`, `HR`, `WG`) with color-coded visual bounding overlays.
 
-## 📌 Demonstration & Pipeline Output
+## 📌 Demonstration & Visual Output
+
+<div align="center">
+  <img src="docs/demo_sample.png" alt="Rice Grain Cultivar Classification Output" width="850px" />
+  <p><em>Figure: Automated segmentation, perspective rectification, and color-coded multi-class contour overlay distinguishing rice cultivars on an inspection surface.</em></p>
+</div>
 
 
 *Figure 1: Automated grain contour extraction, perspective alignment, and multi-class cultivar identification visualized directly on the source frame.*
