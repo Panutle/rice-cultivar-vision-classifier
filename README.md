@@ -1,4 +1,4 @@
-# Smart Grain Phenotyping: Multi-Cultivar Rice Grain Inspection & Classification via Deep CNN
+# Rice Cultivar Classification with OpenCV & CNN
 
 An automated Computer Vision and Deep Learning framework engineered for non-destructive agricultural grain quality inspection and phenotypic analysis. The system detects, segments, and normalizes individual rice grains distributed across an inspection surface and classifies distinct cultivars (`BN`, `HR`, `WG`) with color-coded visual bounding overlays.
 
@@ -11,7 +11,7 @@ An automated Computer Vision and Deep Learning framework engineered for non-dest
 
 ## ⚙️ Architectural & Pipeline Design
 
-```
+```mermaid
 flowchart TD
     subgraph Preprocessing["1. Morphological Grain Isolation"]
         A[Raw Multi-Grain Image] --> B[Grayscale & Binary Thresholding: Val 70]
@@ -77,7 +77,7 @@ rice-cultivar-vision-classifier/
 ├── requirements.txt
 ├── .gitignore
 ├── docs/
-│   └── demo_sample.png            # Visual classification sample
+│   └── demo_sample.jpg            # Visual classification sample
 └── src/
     ├── inference_pipeline.py      # Grain segmentation, perspective alignment & visual overlay
     └── train_cnn.py               # Deep CNN architecture, training loops & evaluation
@@ -85,38 +85,64 @@ rice-cultivar-vision-classifier/
 
 ```
 
-## 📊 Target Cultivars
+## Target classes
 
-| **Class Label** | **Cultivar Identifier** | **Dominant Morphology & Visual Profile** | 
-| **BN** | Cultivar 1 (Blue Overlay) | Extra-long slender profile, high translucency | 
-| **HR** | Cultivar 2 (Green Overlay) | Medium slender grain, distinct curvature | 
-| **WG** | Cultivar 3 (Red Overlay) | Short rounded bold grain, opaque endosperm | 
+The training label order is `['BN', 'HR', 'WG']`. The inference code assigns OpenCV BGR colors as follows:
 
-## 🚀 Setup & Execution
+| Class | Index | Overlay |
+| --- | --- | --- |
+| BN | 0 | Red |
+| HR | 1 | Blue |
+| WG | 2 | Green |
 
-### 1. Environment Installation
+## Setup and execution
 
-```
+The training dataset and `.keras` model are not bundled. A desktop Python environment with Tkinter is needed for file-selection dialogs. TensorFlow/Keras dependencies specify lower bounds rather than a validated environment lock.
+
+### Install dependencies
+
+Run these commands from a terminal with Python available:
+
+```bash
 git clone https://github.com/Panutle/rice-cultivar-vision-classifier.git
 cd rice-cultivar-vision-classifier
-pip install -r requirements.txt
-
+python -m venv .venv
 ```
 
-### 2. Model Training & Evaluation
+Activate the environment using the command for your shell:
 
+| Shell | Command |
+| --- | --- |
+| Windows PowerShell | `.\.venv\Scripts\Activate.ps1` |
+| macOS / Linux | `source .venv/bin/activate` |
+
+```bash
+python -m pip install -r requirements.txt
 ```
+
+### Prepare data and output paths
+
+- Training expects a flat folder of grain images named with a class prefix, such as `BN_001.jpg`, `HR_001.jpg`, and `WG_001.jpg`. Labels are read from the text before the first underscore.
+- Update the hard-coded `/Users/...` output paths in the `Variable` classes in both scripts and create those directories. The training folder is selected by a GUI dialog; output paths are not selected automatically.
+- The training loader writes and removes temporary `HSV_` images in the input folder, so use a writable working copy.
+- Replace or disable the `ntfy.sh` notification call in the training script for your environment.
+
+### Train
+
+```bash
 python src/train_cnn.py
-
 ```
 
-*(Select the source image training directory via the GUI file picker when prompted.)*
+Select the training image directory. The script saves a model, confusion matrix, and loss plot to the configured locations.
 
-### 3. Bulk Detection & Multi-Cultivar Inference
+### Classify an inspection image
 
-```
+```bash
 python src/inference_pipeline.py
-
 ```
 
-*(Select the inspection image and pre-trained `.keras` model via the GUI dialog.)*
+Select a `.jpg` or `.png` inspection image and then a compatible `.keras` model. The script segments grains and saves an annotated image to the configured output path.
+
+## Limitations
+
+Thresholds and contour-area filters are tuned to the original image scale and capture conditions. Validate them on new lighting, backgrounds, and camera resolutions. The repository does not include an independent test set or a reproducible accuracy benchmark. Training augments images before splitting, so a source-image-level split would be needed to avoid related augmentations crossing evaluation boundaries.
